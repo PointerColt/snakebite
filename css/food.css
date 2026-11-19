@@ -1,0 +1,8 @@
+.food {
+  height: 90%;
+  width: 90%;
+  background-image: url(../asset/rat.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
