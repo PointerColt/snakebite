@@ -2,14 +2,15 @@
   color-scheme: dark;
   --bg-base: #0b0f14;
   --bg-surface: #0f161d;
+  --special-text: #48d181;
   --font-grostesk: "Space Grotesk", sans-serif; /* title, buttons, menus */
   --font-mono: "Space Mono", monospace; /* score, labels, control hint */
   --grid-dots: #1e2a35;
   --snake-head: #7cffb2;
-  --snake-tail: #1b5e57;
   --text-primary: #e6f1f5;
   --text-secondary: #8fa3b3;
   --border: #2b3b49;
+  --hover: #152736;
 
   --space-0-5rem: 0.5rem;
   --space-1rem: 1rem;

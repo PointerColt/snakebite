@@ -70,3 +70,7 @@ body {
   color: var(--text-secondary);
   font-weight: 600;
 }
+
+#nav-btn:hover {
+  background-color: var(--hover);
+}

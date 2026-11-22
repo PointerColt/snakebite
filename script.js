@@ -1,6 +1,14 @@
 const gridBox = document.querySelector(".grid-box");
 let scoreDiv = document.querySelector(".score-card");
-const snakeHead = document.createElement("snaketail");
+let startBtn = document.querySelector("#nav-btn");
+
+const gameOverDialog = document.querySelector("#game-over-dialog");
+const finalScore = document.querySelector("#final-score");
+const finalBestScore = document.querySelector("#final-best-score");
+const playAgainBtn = document.querySelector("#play-again-btn");
+
+let intervalId = null;
+let isPlaying = false;
 
 const colms = 20,
   rows = 20;
@@ -18,9 +26,8 @@ let snakeFood = { x: 10, y: 10 };
 
 let score = 0;
 
-let bestScoreVar = Number(localStorage.getItem("bestScore")) || 0;
-scoreDiv.children[2].children[1].textContent =
-  localStorage.getItem("bestscore");
+let bestScoreVar = Number(localStorage.getItem("bestscore")) || 0;
+scoreDiv.children[2].children[1].textContent = bestScoreVar;
 
 // make the grid of cells like 20*20 grid cell
 for (let i = 0; i < colms * rows; i++) {
@@ -32,6 +39,10 @@ for (let i = 0; i < colms * rows; i++) {
 
 // check the direction of snake and also update it //
 document.addEventListener("keydown", (eventObj) => {
+  if (!isPlaying) {
+    return;
+  }
+
   switch (eventObj.key) {
     case "ArrowUp":
       if (direction != "down") {
@@ -60,14 +71,42 @@ document.addEventListener("keydown", (eventObj) => {
   console.log(direction);
 });
 
-// food
+// locate the food
 locateFood();
 
-// Crawl the snake
-addClassToDiv();
-const intervalId = setInterval(gameLoop, 200);
+// locate the snake
+moveSnake();
+
+// start the game
+startBtn.addEventListener("click", startGame);
+
+// play again the game
+playAgainBtn.addEventListener("click", () => {
+  gameOverDialog.close();
+  startGame();
+});
 
 // ************************ functions ****************** //
+
+function startGame() {
+  if (isPlaying) return;
+
+  isPlaying = true;
+
+  clearInterval(intervalId);
+
+  intervalId = setInterval(() => {
+    gameLoop();
+  }, 200);
+}
+
+function showGameOver() {
+  finalScore.textContent = score;
+  finalBestScore.textContent = bestScoreVar;
+
+  gameOverDialog.showModal();
+}
+
 // helper function to convert x, y into index
 function convertXYintoIndex(x, y) {
   return y * colms + x;
@@ -113,7 +152,10 @@ function updateSnake() {
 
   if (hitCondition) {
     clearInterval(intervalId);
+    isPlaying = false;
+
     bestScore();
+    showGameOver();
     reset();
     return;
   }
@@ -137,9 +179,7 @@ function addClassToDiv() {
     let indexOfCells = 0;
     indexOfCells = convertXYintoIndex(element.x, element.y);
 
-    if (iterator === 0) {
-      cellArr[indexOfCells].classList.add("snaketail");
-    } else if (iterator === snakee.length - 1) {
+    if (iterator === snakee.length - 1) {
       cellArr[indexOfCells].classList.add("snakehead");
 
       if (direction === "right") {
@@ -162,7 +202,6 @@ function addClassToDiv() {
 function removeClassToDiv() {
   cellArr.forEach((element) => {
     element.classList.remove("snakebody");
-    element.classList.remove("snaketail");
     element.classList.remove("snakehead");
     element.classList.remove("head-right");
     element.classList.remove("head-left");
@@ -212,11 +251,34 @@ function reset() {
   ];
   snakeFood = { x: 10, y: 10 };
   score = 0;
+
+  // Clear old classes to remove visual glitch
+  cellArr.forEach((cell) => {
+    cell.classList.remove(
+      "food",
+      "snakebody",
+      "snaketail",
+      "snakehead",
+      "head-right",
+      "head-left",
+      "head-up",
+      "head-down",
+    );
+  });
+
+  // Update score display
+  scoreDiv.children[1].children[1].textContent = score;
+
+  // Draw fresh game state
+  locateFood();
+  moveSnake();
 }
 
 function bestScore() {
   if (score > bestScoreVar) {
     bestScoreVar = score;
     localStorage.setItem("bestscore", bestScoreVar);
+
+    scoreDiv.children[2].children[1].textContent = bestScoreVar;
   }
 }
