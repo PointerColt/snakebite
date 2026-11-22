@@ -74,3 +74,17 @@ body {
 #nav-btn:hover {
   background-color: var(--hover);
 }
+
+#pause-btn {
+  padding: var(--space-0-5rem);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  border-radius: 1rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+#pause-btn:hover {
+  background-color: var(--hover);
+}

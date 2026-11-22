@@ -7,8 +7,11 @@ const finalScore = document.querySelector("#final-score");
 const finalBestScore = document.querySelector("#final-best-score");
 const playAgainBtn = document.querySelector("#play-again-btn");
 
+const pauseBtn = document.querySelector("#pause-btn");
+
 let intervalId = null;
 let isPlaying = false;
+let isPaused = false;
 
 const colms = 20,
   rows = 20;
@@ -86,12 +89,18 @@ playAgainBtn.addEventListener("click", () => {
   startGame();
 });
 
+// pause button
+pauseBtn.addEventListener("click", togglepause);
+
 // ************************ functions ****************** //
 
 function startGame() {
   if (isPlaying) return;
 
   isPlaying = true;
+  startBtn.style.display = "none";
+  pauseBtn.style.display = "block";
+  pauseBtn.textContent = "pause";
 
   clearInterval(intervalId);
 
@@ -244,6 +253,8 @@ function scoreCounting() {
 
 function reset() {
   direction = "right";
+  isPaused = false;
+
   snakee = [
     { x: 0, y: 0 },
     { x: 1, y: 0 },
@@ -266,6 +277,10 @@ function reset() {
     );
   });
 
+  pauseBtn.style.display = "none";
+  startBtn.style.display = "block";
+  pauseBtn.textContent = "Pause";
+
   // Update score display
   scoreDiv.children[1].children[1].textContent = score;
 
@@ -280,5 +295,19 @@ function bestScore() {
     localStorage.setItem("bestscore", bestScoreVar);
 
     scoreDiv.children[2].children[1].textContent = bestScoreVar;
+  }
+}
+
+function togglepause() {
+  if (!isPlaying) return;
+
+  if (!isPaused) {
+    clearInterval(intervalId);
+    isPaused = true;
+    pauseBtn.textContent = "Resume";
+  } else {
+    isPaused = false;
+    pauseBtn.textContent = "pause";
+    intervalId = setInterval(gameLoop, 200);
   }
 }
