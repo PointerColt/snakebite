@@ -1,5 +1,6 @@
 const gridBox = document.querySelector(".grid-box");
 let scoreDiv = document.querySelector(".score-card");
+const snakeHead = document.createElement("snaketail");
 
 const colms = 20,
   rows = 20;
@@ -131,16 +132,42 @@ function updateSnake() {
 }
 
 function addClassToDiv() {
+  let iterator = 0;
   snakee.forEach((element) => {
     let indexOfCells = 0;
     indexOfCells = convertXYintoIndex(element.x, element.y);
+
+    if (iterator === 0) {
+      cellArr[indexOfCells].classList.add("snaketail");
+    } else if (iterator === snakee.length - 1) {
+      cellArr[indexOfCells].classList.add("snakehead");
+
+      if (direction === "right") {
+        cellArr[indexOfCells].classList.add("head-right");
+      } else if (direction === "left") {
+        cellArr[indexOfCells].classList.add("head-left");
+      } else if (direction === "up") {
+        cellArr[indexOfCells].classList.add("head-up");
+      } else if (direction === "down") {
+        cellArr[indexOfCells].classList.add("head-down");
+      }
+    }
+
     cellArr[indexOfCells].classList.add("snakebody");
+
+    iterator++;
   });
 }
 
 function removeClassToDiv() {
   cellArr.forEach((element) => {
     element.classList.remove("snakebody");
+    element.classList.remove("snaketail");
+    element.classList.remove("snakehead");
+    element.classList.remove("head-right");
+    element.classList.remove("head-left");
+    element.classList.remove("head-down");
+    element.classList.remove("head-up");
   });
 }
 

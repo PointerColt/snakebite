@@ -1,3 +1,65 @@
 .snakebody {
   background-color: var(--snake-head);
+  border-radius: 30%;
+  box-shadow: 0 0 8px 2px color-mix(in srgb, var(--snake-head) 35%, transparent);
+}
+
+.snakehead {
+  position: relative;
+  border-radius: 50%;
+}
+
+/* Eyes */
+.snakehead::before,
+.snakehead::after {
+  content: "";
+  position: absolute;
+  width: 20%;
+  height: 15%;
+  background-color: #10201d;
+  border-radius: 50%;
+}
+
+/* UP */
+.snakehead.head-up::before {
+  top: 20%;
+  left: 25%;
+}
+
+.snakehead.head-up::after {
+  top: 20%;
+  right: 25%;
+}
+
+/* DOWN */
+.snakehead.head-down::before {
+  bottom: 20%;
+  left: 25%;
+}
+
+.snakehead.head-down::after {
+  bottom: 20%;
+  right: 25%;
+}
+
+/* RIGHT */
+.snakehead.head-right::before {
+  right: 20%;
+  top: 25%;
+}
+
+.snakehead.head-right::after {
+  right: 20%;
+  bottom: 25%;
+}
+
+/* LEFT */
+.snakehead.head-left::before {
+  left: 20%;
+  top: 25%;
+}
+
+.snakehead.head-left::after {
+  left: 20%;
+  bottom: 25%;
 }

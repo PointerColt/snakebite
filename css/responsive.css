@@ -1,0 +1,5 @@
+@media (max-width: 600px) {
+  .grid-box {
+    width: 90vw;
+  }
+}
